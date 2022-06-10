@@ -2,8 +2,6 @@ import App from "../../app";
 import { createElement } from "../../helpers/domHelper";
 import { createFighterImage } from "../fighterPreview";
 import { showModal } from "./modal";
-// import { createFighters } from './components/fightersView';
-// import { fighterService } from './services/fightersService';
 
 
 export function showWinnerModal(fighter) {
