@@ -21,6 +21,7 @@ export async function fight(firstFighter, secondFighter) {
         if (!keyDownBtns.includes(event.key)) {
           keyDownBtns += event.key;
         }
+        console.log(keyDownBtns);
         if (keyDownBtns.includes(controls.PlayerOneCriticalHitCombination[0].slice(3,4).toLocaleLowerCase()) 
             && keyDownBtns.includes(controls.PlayerOneCriticalHitCombination[1].slice(3,4).toLocaleLowerCase()) 
             && keyDownBtns.includes(controls.PlayerOneCriticalHitCombination[2].slice(3,4).toLocaleLowerCase()) 
@@ -94,44 +95,45 @@ export async function fight(firstFighter, secondFighter) {
       }
     });
   });
-}
 
-function HealthChange (fighter, demadge) {
-  if (demadge > 0) {
-    fighter.currentHealth -=demadge;
-    let leftHelthPersentage = Math.floor(fighter.currentHealth * 100 / fighter.health);
-    leftHelthPersentage = leftHelthPersentage <= 0 ? 0 : leftHelthPersentage;
-    let healthBar = document.getElementById(`${fighter.position}-fighter-indicator`);
-    healthBar.style.width = `${leftHelthPersentage}%`;
-  }
-}
-
-function clearKeyDownBtns (keyDownBtns, hitType) {
-  let updatedKeyDownBtns = '';
-  if (hitType === 'PlayerOneCriticalHitCombination' || hitType === 'PlayerTwoCriticalHitCombination') {
-    for (let el of controls[hitType]) {
-      updatedKeyDownBtns = keyDownBtns.replace(el.substring(3,4).toLocaleLowerCase(), '');
+  function HealthChange (fighter, demadge) {
+    if (demadge > 0) {
+      fighter.currentHealth -=demadge;
+      let leftHelthPersentage = Math.floor(fighter.currentHealth * 100 / fighter.health);
+      leftHelthPersentage = leftHelthPersentage <= 0 ? 0 : leftHelthPersentage;
+      let healthBar = document.getElementById(`${fighter.position}-fighter-indicator`);
+      healthBar.style.width = `${leftHelthPersentage}%`;
     }
-  } else {
-    updatedKeyDownBtns = keyDownBtns.replace(controls[hitType].substring(3,4).toLocaleLowerCase(), '');
   }
-  return updatedKeyDownBtns;
-}
 
-//get buttons for manipulations listener
-function controlBtnsForListener() {
-  let controlBtnsForListener = '';
-  for (let el in controls) {
-    if (typeof controls[el] === 'string' || controls[el] instanceof String) {
-      controlBtnsForListener += controls[el].substring(3,4).toLocaleLowerCase();
-    } else if (Array.isArray(controls[el]) === true) {
-      for (let subEl of controls[el]) {
-        controlBtnsForListener += subEl.substring(3,4).toLocaleLowerCase();
+  function clearKeyDownBtns (keyDownBtns, hitType) {
+    let updatedKeyDownBtns = '';
+    if (hitType === 'PlayerOneCriticalHitCombination' || hitType === 'PlayerTwoCriticalHitCombination') {
+      for (let el of controls[hitType]) {
+        updatedKeyDownBtns = keyDownBtns.replace(el.substring(3,4).toLocaleLowerCase(), '');
+      }
+    } else {
+      updatedKeyDownBtns = keyDownBtns.replace(controls[hitType].substring(3,4).toLocaleLowerCase(), '');
+    }
+    return updatedKeyDownBtns;
+  }
+
+  //get buttons for manipulations listener
+  function controlBtnsForListener() {
+    let controlBtnsForListener = '';
+    for (let el in controls) {
+      if (typeof controls[el] === 'string' || controls[el] instanceof String) {
+        controlBtnsForListener += controls[el].substring(3,4).toLocaleLowerCase();
+      } else if (Array.isArray(controls[el]) === true) {
+        for (let subEl of controls[el]) {
+          controlBtnsForListener += subEl.substring(3,4).toLocaleLowerCase();
+        }
       }
     }
+    return controlBtnsForListener;
   }
-  return controlBtnsForListener;
 }
+
 
 export function getDamage(attacker, defender) {
   let hitPower = getHitPower(attacker);
@@ -150,7 +152,7 @@ export function getDamage(attacker, defender) {
 
 export function getHitPower(fighter) {
   let hitPower = 0;
-  let criticalHitChance = Math.random() * 2;
+  let criticalHitChance = Math.random() + 1;
   hitPower = fighter.attack * criticalHitChance;
   return hitPower;
   // return hit power
@@ -158,8 +160,8 @@ export function getHitPower(fighter) {
 
 export function getBlockPower(fighter) {
   let blockPower = 0;
-  let dodgeChance = Math.random() * 2;
-  blockPower = fighter.defense * dodgeChance;
+  let randomNumber = Math.random() + 1;
+  blockPower = fighter.defense * randomNumber;
 
   return blockPower;
   // return block power
