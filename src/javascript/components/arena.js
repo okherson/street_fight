@@ -1,5 +1,7 @@
 import { createElement } from '../helpers/domHelper';
 import { createFighterImage } from './fighterPreview';
+import { fight } from './fight';
+import { showWinnerModal } from './modal/winner';
 
 export function renderArena(selectedFighters) {
   const root = document.getElementById('root');
@@ -10,14 +12,19 @@ export function renderArena(selectedFighters) {
 
   // todo:
   // - start the fight
+  const winner = fight(selectedFighters[0], selectedFighters[1]);
+  winner.then((resolve) => {
   // - when fight is finished show winner
+  showWinnerModal(resolve);
+  }).catch((error) => {
+    console.log('Promise error'+error);
+  });
 }
 
 function createArena(selectedFighters) {
   const arena = createElement({ tagName: 'div', className: 'arena___root' });
   const healthIndicators = createHealthIndicators(...selectedFighters);
   const fighters = createFighters(...selectedFighters);
-  
   arena.append(healthIndicators, fighters);
   return arena;
 }
