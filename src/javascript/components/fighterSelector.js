@@ -24,7 +24,6 @@ export async function getFighterInfo(fighterId) {
   const fighter = await fighterService.getFighterDetails(fighterId);
   const { _id, name, health, attack, source } = fighter;
   fighterDetailsMap.set(_id, name, health, attack, source);
-  console.log(fighterDetailsMap);
   return fighter;
   // get fighter info from fighterDetailsMap or from service and write it to fighterDetailsMap
 }
